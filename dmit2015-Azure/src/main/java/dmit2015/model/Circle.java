@@ -33,13 +33,9 @@ public class Circle {
     }
 
     // method
-    public double Area(){
-        return Math.PI * radius*radius;
-    }
-    // method
-    public double Perimeter(){
-        return Math.PI*radius*2;
-    }
+    public double area() { return Math.PI * Math.pow(radius, 2); }
+    public double diameter() { return radius * 2; }
+    public double circumference() { return 2 * Math.PI * radius; }
     public static void main(String[] args){
         // create a new instance of circle but did not assign it's value
     Circle circle1 = new Circle();
@@ -54,8 +50,8 @@ public class Circle {
         // % -- followning with the number you wants to get
         // \n start a new line
     System.out.printf("The radius og circle1 is %s\n",circle1.getRadius());
-    System.out.printf("The area of circle1 is %.2f(2 decimal),\n",circle1.Area());
-    System.out.printf("The perimeter of circle1 is %.2f",circle1.Perimeter());
+    System.out.printf("The area of circle1 is %.2f(2 decimal),\n",circle1.area());
+    System.out.printf("The perimeter of circle1 is %.2f",circle1.diameter());
 
     try {
         circle1.setRadius(-25);
