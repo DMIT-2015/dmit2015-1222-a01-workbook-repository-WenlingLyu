@@ -12,7 +12,11 @@ public class BMI {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(double height) throws Exception {
+        if(height<=0){
+            throw new Exception("Height must be greater than 0");
+        }
+
         this.height = height;
     }
 
