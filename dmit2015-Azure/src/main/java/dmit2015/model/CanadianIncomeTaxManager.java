@@ -1,5 +1,7 @@
 package dmit2015.model;
 
+import lombok.Getter;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -7,8 +9,24 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CanadianIncomTaxManager {
-    public List<String> fetchIncomTaxData(){
+public class CanadianIncomeTaxManager {
+    //define a private constructor to implement single pattern
+    private CanadianIncomeTaxManager(){
+
+    }
+    //define a single instance of this class
+    private static  CanadianIncomeTaxManager INSTANCE;
+
+    //define a static class-level to access the singleton
+    public static CanadianIncomeTaxManager getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new CanadianIncomeTaxManager();
+        }
+        return INSTANCE;
+    }
+    @Getter
+    public List<CanadianPersonalIncomeTaxRate> incomeTaxRates;
+    public List<String> fetchIncomeTaxData(){
         List<String> incomeTaxData = new ArrayList<>();
         Path csvPath = null;
         try {
