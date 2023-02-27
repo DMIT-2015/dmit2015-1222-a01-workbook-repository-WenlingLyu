@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ca.nait.dmit.dmit2015azure"},{"l":"dmit2015.model"}];updateSearchResults();

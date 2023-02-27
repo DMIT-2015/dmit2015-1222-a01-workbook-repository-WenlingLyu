@@ -3,8 +3,8 @@ package dmit2015.model;
 /**
  * This class model a Circle shape.
  *
- * @author Wenling Lyu
- * @version 2023.02.02
+ * @author Sam Wu
+ * @version 2023.01.20
  */
 public class Circle {
 

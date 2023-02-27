@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Named      // allows you to access an object of this class with the name sessionScopeCounterController using EL
 @SessionScoped  // create this object for one HTTP session and destory after the HTTP session expires
-// class must implement Serializable
+                // class must implement Serializable
 public class SessionScopeCounterController implements Serializable {
 
     private int counter = 0;

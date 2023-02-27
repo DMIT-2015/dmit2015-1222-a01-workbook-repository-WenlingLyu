@@ -22,10 +22,3 @@ public class RequestScopeCounterController {
         return "";
     }
 }
-
-
-// Difference between each scope
-// Request: only get 1 request
-// ViewScope: Can change but limited to one page
-// SessionScope: Can change between different page but limited to one browser
-// ApplicationScope: Can change without the limitation of different pages and browser
