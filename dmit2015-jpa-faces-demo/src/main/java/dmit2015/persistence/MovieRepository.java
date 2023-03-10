@@ -2,8 +2,10 @@ package dmit2015.persistence;
 
 import dmit2015.entity.Movie;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.security.enterprise.SecurityContext;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -12,11 +14,16 @@ import java.util.Optional;
 @ApplicationScoped
 public class MovieRepository {
 
+
     @PersistenceContext
     private EntityManager em;
 
+    @Inject
+    private SecurityContext _securityContext;
     @Transactional
     public void add(Movie newMovie) {
+        String username = _securityContext.getCallerPrincipal().getName();
+        newMovie.setUsername(username);
         em.persist(newMovie);
     }
 
@@ -34,8 +41,20 @@ public class MovieRepository {
     }
 
     public List<Movie> findAll() {
-        return em.createQuery("SELECT o FROM Movie o ", Movie.class)
-                .getResultList();
+        List<Movie> resultList = null;
+        if (_securityContext.getCallerPrincipal().getName().equalsIgnoreCase("anonymous") ) {
+            throw new RuntimeException("Access Denied. Anonymous users do not have permission to access this method.");
+        } else if (_securityContext.isCallerInRole("Executive")|| _securityContext.isCallerInRole("Administration") ) {
+            resultList = em.createQuery("SELECT m FROM Movie m", Movie.class).getResultList();
+        } else {
+            String username = _securityContext.getCallerPrincipal().getName();
+            resultList = em.createQuery("SELECT m FROM Movie m WHERE m.username = :usernameParam", Movie.class)
+                    .setParameter("usernameParam", username).getResultList();
+        }
+        return resultList;
+
+//        return em.createQuery("SELECT o FROM Movie o ", Movie.class)
+//                .getResultList();
     }
 
     @Transactional
@@ -47,9 +66,13 @@ public class MovieRepository {
             // Update only properties that is editable by the end user
             existingMovie = optionalMovie.orElseThrow();
             // TODO: Copy each edit property from updatedMovie to existingMovie
-            //existingMovie.setPropertyName(updatedMovie.getPropertyName());
+            existingMovie.setTitle(updatedMovie.getTitle());
+            existingMovie.setReleaseDate(updatedMovie.getReleaseDate());
+            existingMovie.setRating(updatedMovie.getRating());
+            existingMovie.setGenre(updatedMovie.getGenre());
+            existingMovie.setPrice(updatedMovie.getPrice());
 
-            em.merge(existingMovie);
+            existingMovie = em.merge(existingMovie);
         }
 
         return existingMovie;
